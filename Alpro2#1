@@ -1,0 +1,112 @@
+#include<stdio.h>
+#include<string.h>
+#include<conio.h>
+	int menu,remov;
+	char text[50];
+	char file[50];
+	char hapus[30];
+	
+void bikinfile(){
+	system ("cls");
+	FILE *newFile;
+			printf("Nama file : ");
+			scanf("%s",&file);
+			strcat(file,".txt");
+			newFile = fopen(file,"r");
+			if(newFile == 0){
+				fclose(newFile);
+				newFile = fopen(file,"w");
+				printf("File %s sudah dibuat",file);
+			}else{
+				printf("File sudah ada.");
+			}
+			fclose(newFile);
+			getch();
+}
+void tambahdata(){
+	system("cls");
+	FILE *newFile;
+			newFile = fopen(file,"r");
+			if(newFile == 0){
+				printf("File tidak ada");
+			}else{
+				FILE *f;
+				f = fopen(file,"w");
+				printf("masukan data : "); 
+				fflush(stdin);
+				gets(text);
+		        fprintf(f, "%s\n", text);
+		        fclose(f);
+			 	printf("Data berhasil ditambahkan : %s .", text);
+				fclose(f);
+			} getch();
+}
+void bukadata(){
+	system("cls");
+	FILE *f;
+			f = fopen(file, "r");
+			char text[50];
+			fgets(text,50,f);
+		    printf("isi file : %s\n",text);
+		    fclose(f);
+		    getch();
+}
+void hapusdata(){
+	system("cls");
+	printf("Masukkan nama file yang akan di hapus: ");
+			scanf("%s",hapus);
+			strcat(hapus,".txt");
+			remov = remove(hapus);
+			if(remov == 0){
+		    	printf("File Terhapus");
+		   	}
+		   	else{
+		    	printf("Error: file ini tidak dapat dihapus / tidak ada.");
+		   	} getch();
+}
+main(){
+	do{
+		system("cls");
+		printf("\nPilih menu dibawah ini:\n");
+		printf("1.Buat File Teks\n");
+		printf("2.Tambah Data File\n");
+		printf("3.Tampilkan Data File\n");
+		printf("4.Hapus File .Txt\n");
+		printf("5.Exit\n");
+		printf("Pilih Menu :");
+		scanf("%d",&menu);
+		switch (menu){
+		case 1:{
+			bikinfile();
+			break;
+		}
+		
+		case 2:{
+			tambahdata();
+			break;
+		}
+		
+		case 3:{
+			bukadata();
+			break;
+		}
+		
+		case 4:{
+			hapusdata();
+			break;
+		}
+		
+		case 5:{
+			printf("====================");
+			printf("\n EXIT PROGRAM... \n");
+			printf("====================");
+			break;
+		}
+		default :{
+			printf("Menu yang anda masukan tidak valid.");
+			getch();
+			break;
+		}
+		}
+	} while(menu!=5);
+}
