@@ -1,0 +1,130 @@
+#include<stdio.h>
+#include<string.h>
+#include<conio.h>
+typedef struct{
+	char kode[6]; 
+	char nama[25]; 
+	int harga; 
+	}Dataproduk;
+Dataproduk produk;
+FILE *prc;
+float ratap;
+
+
+void RekamFile(FILE *prc);
+void AmbilData (FILE *prc);
+
+int cekarsip(){
+	int ars,size;
+	prc = fopen("Dtprc.txt","r");
+	fseek(prc, 0, SEEK_END);
+	size = ftell(prc);
+	if (size == 0){
+		ars = 0;
+	}else{
+		ars = 1;
+	}
+	fclose(prc);
+	return ars;
+}
+
+//rekam file (menu1)
+void RekamFile(FILE *prc){
+	system("cls");
+    char cek2;
+    prc=fopen("Dtprc.txt","w");
+    do{
+    	printf("input data produk berikut\n");
+        printf("KODE \t:");scanf("%s",&produk.kode); 
+        printf("Nama \t:");scanf("%s",&produk.nama); 
+        printf("Harga \t:");scanf("%d",&produk.harga); 
+		fprintf(prc,"%s %s %d\n",produk.kode, produk.nama, produk.harga);
+		printf("input lagi? Y/N :"); fflush(stdin); scanf("%c",&cek2);
+    }while(cek2== 'y');
+    	fprintf(prc,"XXX XXX XXX");
+        fclose(prc);
+	    getch();
+}
+
+//Ambil data dari arsip (menu 2)
+void AmbilData (FILE *prc){
+	system("cls");
+	if(cekarsip()==1){
+		prc=fopen("Dtprc.txt","r");
+		printf("Arsip Produk:\n");
+		fscanf(prc, "%s %s %d\n",&produk.kode, &produk.nama, &produk.harga );
+		if(strcmp(produk.kode, "XXX") == 0){
+			printf("Arsip Kosong\n");
+		}else{
+			do{
+				printf("Kode : %s\n",produk.kode);
+				printf("Nama Produk  : %s\n",produk.nama);
+				printf("Harga : %d\n",produk.harga);
+				printf("\n============================\n");
+				fscanf(prc, "%s %s %d\n", &produk.kode, &produk.nama, &produk.harga);
+			}while(strcmp(produk.kode, "XXX") != 0);
+		}   
+		fclose(prc);
+	}else{
+		printf("Arsip Kosong\n");
+	}
+	getch();
+}
+//hitung total produk (menu3)
+int totalproduk(){
+	}
+float rataproduk(){
+	float total=0;
+	float th;
+	int jumlah=0;
+	if(cekarsip()==1){
+		prc=fopen("Dtprc.txt","r");
+		fscanf(prc, "%s %s %d\n",&produk.kode, &produk.nama, &produk.harga );
+		do{
+			total=total+produk.harga;	
+			jumlah++;
+			fscanf(prc, "%s %s %d\n",&produk.kode, &produk.nama, &produk.harga );
+		}while(strcmp(produk.kode, "XXX") != 0);
+		th=total/jumlah;
+		fclose(prc);
+	}
+	return th;
+}
+
+//program utama
+main(){
+	
+    int i,j;
+    do{
+    	system("cls");
+        printf("Menu yang kami sediakan : ");
+        printf("\n1.| Buat Arsip ");
+        printf("\n2.| Tampil Isi Arsip ");
+        printf("\n3.| Hitung Total Produk ");
+        printf("\n4.| Hitung Rata-rata Produk ");
+        printf("\n5.| Keluar Program ");
+        printf("\n\nMasukkan nomor pilihan menu anda :");
+		scanf("%d", &i);
+
+        switch(i){
+            case 1 : RekamFile(prc); break;
+            case 2 : AmbilData(prc); break;
+            case 3 :totalproduk();
+            		printf("Total harga produk : Rp %d",totalproduk());
+					getch();
+					break;
+            case 4 :system("cls");
+					ratap = rataproduk(); 
+            		printf("Rata-rata Nilai Produk : Rp %f",ratap);
+            		getch();
+					break;
+            case 5 : printf("================\n");
+            		 printf("EXIT PROGRAM->\n");
+            		 printf("================");
+            		 break;
+            default: printf("MENU YANG ANDA MASUKAN TIDAK VALID");
+            getch();
+            break;
+        }
+    }while(i!=5);
+}
